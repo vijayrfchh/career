@@ -364,7 +364,7 @@ function EditCareerPopup({ onSave, onClose, career }) {
         validationsErrors[field] = `${field} must be min 2 characters`;
       } else if (formData[field].length > 20) {
         validationsErrors[field] = `${field} must be max 20 characters`;
-      }
+      } 
     });
     //validate of skillset
     if (!formData.skillset) {
@@ -374,15 +374,9 @@ function EditCareerPopup({ onSave, onClose, career }) {
     if (!formData.noOfRequirement) {
       validationsErrors.noOfRequirement = " Requirements is required.";
     } else if (!/^\d+$/.test(formData.noOfRequirement)) {
-      validationsErrors.noOfRequirement = "Requirements must be a number.";
+      validationsErrors.noOfRequirement = "It must be a number.";
     }
     // Validate experienceYear
-    // if (!formData.experienceYear) {
-    //   validationsErrors.experienceYear = "Experience  is required.";
-    // } else if (!/^\d+$/.test(formData.experienceYear)) {
-    //   validationsErrors.experienceYear = "Experience  must be a number.";
-    // }
-   
     if (!formData.experienceYear) {
       validationsErrors.experienceYear = "Experience is required.";
     } else if (!/^\d+$/.test(formData.experienceYear)) {
@@ -402,9 +396,11 @@ function EditCareerPopup({ onSave, onClose, career }) {
     
     
     if (!/^\d{2}$/.test(formData.age)) {
-      validationsErrors.age = "Age must be 2 digits.";
-    } else if (formData.age > 50) {
-      validationsErrors.age = "Lessthan 50 accepted";
+      // Check if the age is not exactly 2 digits
+      validationsErrors.age = "It must be 2 digits.";
+    } else if (formData.age < 18 || formData.age > 50) {
+      // Age should be between 18 and 50
+      validationsErrors.age = "should be 18 to 50.";
     } else if (!formData.age || formData.age <= 0) {
       // If no age is provided or age is zero or negative, set it to '---'
       formData.age = "---";
@@ -412,6 +408,7 @@ function EditCareerPopup({ onSave, onClose, career }) {
       // Clear any previous age error if age is valid
       delete validationsErrors.age;
     }
+    
     
   
     //workmode validataion
@@ -422,13 +419,13 @@ function EditCareerPopup({ onSave, onClose, career }) {
     if (!formData.salaryFrom) {
       validationsErrors.salaryFrom = "Salary From is required.";
     } else if (!/^\d+$/.test(formData.salaryFrom) || formData.salaryFrom < 0) {
-      validationsErrors.salaryFrom = "Salary From must be a positive number.";
+      validationsErrors.salaryFrom = "No Negative Number.";
     }
     // Validate salaryTo
     if (!formData.salaryTo) {
       validationsErrors.salaryTo = "Salary To is required.";
     } else if (!/^\d+$/.test(formData.salaryTo) || formData.salaryTo < 0) {
-      validationsErrors.salaryTo = "Salary To must be a positive number.";
+      validationsErrors.salaryTo = "No Negative Number.";
     }
 
     // Validate jobDescription
@@ -453,9 +450,24 @@ function EditCareerPopup({ onSave, onClose, career }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
 
+    //for preventing space ..
+    const regex = /^[a-zA-Z].*[\s]*$/;
+    if (["jobType", "jobTitle", "jobLocation","skillSet ","noOfRequirements","jobDescription","experienceMonth","experienceYear"].includes(name)) {
+      if (value === "" || regex.test(value)) {
+        setFormData({ ...formData, [name]: value });
+        setErrors({ ...errors, [name]: "" });
+      } else {
+        setErrors({
+          ...errors,
+          [name]: "No space allowed",
+        });
+        return;
+      }
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {

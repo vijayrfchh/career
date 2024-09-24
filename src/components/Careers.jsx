@@ -403,18 +403,19 @@ function App() {
           >
             <h2 className="text-lg font-bold">{career.jobTitle}</h2>
             <p className="text-base font-bold mb-2">Location:<span className="text-xs text-gray-700 pl-3"> {career.jobLocation}</span></p>
-            <p className="text-sm">Role:  <span className="text-xs text-gray-700 pl-3">{career.jobType}</span></p>
-            <p className="text-sm">Experience: <span className="text-xs text-gray-700 pl-3">{career.experienceYear} years and {career.experienceMonth} months</span></p>
-            <p className="text-sm">Age: <span className="text-xs text-gray-700 pl-3">{career.age}</span></p>
+            <p className="text-sm font-bold">Role:  <span className="text-xs text-gray-700 pl-3">{career.jobType}</span></p>
+            <p className="text-sm font-bold">Experience: <span className="text-xs text-gray-700 pl-3">{career.experienceYear} years and {career.experienceMonth} months</span></p>
+            <p className="text-sm font-bold">Age: <span className="text-xs text-gray-700 pl-3">{career.age}</span></p>
 
             {/* Conditionally render more details if the card is expanded */}
             {expandedCardIndex === index && (
               <>
-              <p className="text-sm">WorkMode:<span className="text-xs text-gray-700 pl-3">{career.workMode}</span></p>
-                <p className="text-sm">Requirements:<span className="text-xs text-gray-700 pl-3">{career.noOfRequirement}</span> </p>
-                <p className="text-sm ">Salary:<span className="text-xs text-gray-700 pl-4">{career.salaryFrom} - {career.salaryTo}</span> </p>
-                <p className="text-sm">Published Date:<span className="text-xs text-gray-700 mb-2 pl-2">{career.publishDate}</span> </p>
-                <p className="text-sm">Expire Date:<span className="text-xs text-gray-700 pl-3">{career.expiredDate}</span> </p>
+              <p className="text-sm font-bold">WorkMode:<span className="text-xs text-gray-700 pl-3">{career.workMode}</span></p>
+                <p className="text-sm font-bold">Requirements:<span className="text-xs text-gray-700 pl-3">{career.noOfRequirement}</span> </p>
+                <p className="text-sm font-bold">Salary:<span className="text-xs text-gray-700 pl-4">{career.salaryFrom} - {career.salaryTo}</span> </p>
+                <p className="text-sm font-bold">Published Date:<span className="text-xs text-gray-700 mb-2 pl-2">{career.publishDate}</span> </p>
+                <p className="text-sm font-bold">Expire Date:<span className="text-xs text-gray-700 pl-3">{career.expiredDate}</span> </p>
+                <p className="text-sm font-bold">Skill Set:<span className="text-xs text-gray-700 pl-3">{career.skillSet}</span> </p>
                 <p className="text-sm font-bold">Description: <span className="text-xs text-gray-700">{career.jobDescription}</span></p>
                 <p className="text-bse font-bold mt-5">Status: Published</p>
                 
