@@ -384,16 +384,16 @@ function EditCareerPopup({ onSave, onClose, career }) {
     // }
    
     if (!formData.experienceYear) {
-      validationsErrors.experienceYear = "Yearis required.";
+      validationsErrors.experienceYear = "Experience is required.";
     } else if (!/^\d+$/.test(formData.experienceYear)) {
       validationsErrors.experienceYear = "Year must be a number.";
-    } else if (parseInt(formData.experienceYear, 10) > 20) {
-      validationsErrors.experienceYear = "It must not be morethan 20.";
+    } else if (parseInt(formData.experienceYear, 10) > 30) {
+      validationsErrors.experienceYear = "It must not be morethan 30.";
     }
       
     // Validate experienceMonth
     if (!formData.experienceMonth) {
-      validationsErrors.experienceMonth = "Monthis required.";
+      validationsErrors.experienceMonth = "Month is required.";
     } else if (!/^\d+$/.test(formData.experienceMonth)) {
       validationsErrors.experienceMonth = "Month must be a  number.";
     } else if (parseInt(formData.experienceMonth, 10) > 12) {
@@ -502,7 +502,7 @@ function EditCareerPopup({ onSave, onClose, career }) {
             <div>
               <label className="block text-gray-700">No Of Requirements</label>{" "}
               <input
-                type="number"
+                type="text"
                 name="noOfRequirement"
                 placeholder="No of Requirements"
                 value={formData.noOfRequirement}
@@ -521,6 +521,8 @@ function EditCareerPopup({ onSave, onClose, career }) {
                 type="text"
                 name="experienceYear"
                 placeholder="Experience (Years)"
+                minLength={2}
+                maxLength={2}
                 value={formData.experienceYear}
                 onChange={handleChange}
                 className="border p-2 border-gray-500 rounded-md"
@@ -537,6 +539,8 @@ function EditCareerPopup({ onSave, onClose, career }) {
                 type="text"
                 name="experienceMonth"
                 placeholder="Experience (Months)"
+                minLength={2}
+                maxLength={2}
                 value={formData.experienceMonth}
                 onChange={handleChange}
                 className="border p-2 border-gray-500 rounded-md"
@@ -591,6 +595,8 @@ function EditCareerPopup({ onSave, onClose, career }) {
                 name="age"
                 placeholder="Age"
                 value={formData.age}
+                minLength={2}
+                maxLength={2}
                 onChange={handleChange}
                 className="border p-2 border-gray-500 rounded-md"
               />
@@ -601,10 +607,12 @@ function EditCareerPopup({ onSave, onClose, career }) {
             <div>
               <label className="block text-gray-700">Salary From:</label>{" "}
               <input
-                type="number"
+                type="text"
                 name="salaryFrom"
                 placeholder="Salary From"
                 value={formData.salaryFrom}
+                minLength={5}
+                maxLength={10}
                 onChange={handleChange}
                 className="border p-2 border-gray-500 rounded-md"
               />
@@ -617,10 +625,12 @@ function EditCareerPopup({ onSave, onClose, career }) {
             <div>
               <label className="block text-gray-700">Salary To:</label>
               <input
-                type="number"
+                type="text"
                 name="salaryTo"
                 placeholder="Salary To"
                 value={formData.salaryTo}
+                minLength={5}
+                maxLength={10}
                 onChange={handleChange}
                 className="border p-2 border-gray-500 rounded-md"
               />
