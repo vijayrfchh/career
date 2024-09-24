@@ -377,21 +377,43 @@ function EditCareerPopup({ onSave, onClose, career }) {
       validationsErrors.noOfRequirement = "Requirements must be a number.";
     }
     // Validate experienceYear
+    // if (!formData.experienceYear) {
+    //   validationsErrors.experienceYear = "Experience  is required.";
+    // } else if (!/^\d+$/.test(formData.experienceYear)) {
+    //   validationsErrors.experienceYear = "Experience  must be a number.";
+    // }
+   
     if (!formData.experienceYear) {
-      validationsErrors.experienceYear = "Experience  is required.";
+      validationsErrors.experienceYear = "Yearis required.";
     } else if (!/^\d+$/.test(formData.experienceYear)) {
-      validationsErrors.experienceYear = "Experience  must be a number.";
+      validationsErrors.experienceYear = "Year must be a number.";
+    } else if (parseInt(formData.experienceYear, 10) > 20) {
+      validationsErrors.experienceYear = "It must not be morethan 20.";
     }
+      
     // Validate experienceMonth
     if (!formData.experienceMonth) {
-      validationsErrors.experienceMonth = "Experience   is required.";
+      validationsErrors.experienceMonth = "Monthis required.";
     } else if (!/^\d+$/.test(formData.experienceMonth)) {
-      validationsErrors.experienceMonth = "Experience   must be a number.";
+      validationsErrors.experienceMonth = "Month must be a  number.";
+    } else if (parseInt(formData.experienceMonth, 10) > 12) {
+      validationsErrors.experienceMonth = "It must not be morethan 12.";
     }
-    // Set age to "---" if not provided
-    if (!formData.age) {
-      formData.age = "----";
+    
+    
+    if (!/^\d{2}$/.test(formData.age)) {
+      validationsErrors.age = "Age must be 2 digits.";
+    } else if (formData.age > 50) {
+      validationsErrors.age = "Lessthan 50 accepted";
+    } else if (!formData.age || formData.age <= 0) {
+      // If no age is provided or age is zero or negative, set it to '---'
+      formData.age = "---";
+    } else {
+      // Clear any previous age error if age is valid
+      delete validationsErrors.age;
     }
+    
+  
     //workmode validataion
     if(!formData.workMode){
       validationsErrors.workMode = "Work Mode is required";
