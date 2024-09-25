@@ -381,7 +381,7 @@ function EditCareerPopup({ onSave, onClose, career }) {
     } else if (!/^\d+$/.test(formData.experienceYear)) {
       validationsErrors.experienceYear = "Year must be a number.";
     } else if (parseInt(formData.experienceYear, 10) > 30) {
-      validationsErrors.experienceYear = "It must not be more than 30.";
+      validationsErrors.experienceYear = "less than 30 accepted";
     }
   
     if (!formData.experienceMonth) {
