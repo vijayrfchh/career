@@ -355,16 +355,16 @@ function EditCareerPopup({ onSave, onClose, career }) {
   const validateForm = () => {
     let validationsErrors = {};
 
-    ["jobType", "jobTitle", "jobLocation"].forEach((field) => {
+    [ "skillset","jobTitle", "jobLocation"].forEach((field) => {
       if (!formData[field]) {
         validationsErrors[field] = `${field} is required.`;
       } else if (!/^[A-Za-z ,.-]+$/.test(formData[field])) {
         validationsErrors[field] = `${field} must be string .`;
       } else if (formData[field].length < 2) {
-        validationsErrors[field] = `${field} must be min 2 characters`;
+        validationsErrors[field] = `It must be min 2 characters`;
       } else if (formData[field].length > 20) {
         validationsErrors[field] = `${field} must be max 20 characters`;
-      } 
+      }
     });
     //validate of skillset
     if (!formData.skillset) {
@@ -376,25 +376,22 @@ function EditCareerPopup({ onSave, onClose, career }) {
     } else if (!/^\d+$/.test(formData.noOfRequirement)) {
       validationsErrors.noOfRequirement = "It must be a number.";
     }
-    // Validate experienceYear
     if (!formData.experienceYear) {
-      validationsErrors.experienceYear = "Experience is required.";
+      validationsErrors.experienceYear = "Experience's required.";
     } else if (!/^\d+$/.test(formData.experienceYear)) {
       validationsErrors.experienceYear = "Year must be a number.";
     } else if (parseInt(formData.experienceYear, 10) > 30) {
-      validationsErrors.experienceYear = "It must not be morethan 30.";
+      validationsErrors.experienceYear = "It must not be more than 30.";
     }
-      
-    // Validate experienceMonth
+  
     if (!formData.experienceMonth) {
-      validationsErrors.experienceMonth = "Month is required.";
+      validationsErrors.experienceMonth = "Experience's required.";
     } else if (!/^\d+$/.test(formData.experienceMonth)) {
-      validationsErrors.experienceMonth = "Month must be a  number.";
-    } else if (parseInt(formData.experienceMonth, 10) > 12) {
-      validationsErrors.experienceMonth = "It must not be morethan 12.";
+      validationsErrors.experienceMonth = "Month must be a number.";
+    } else if (parseInt(formData.experienceMonth, 10) > 11) {
+      validationsErrors.experienceMonth = "It must not be more than 11.";
     }
-    
-    
+
     if (!/^\d{2}$/.test(formData.age)) {
       // Check if the age is not exactly 2 digits
       validationsErrors.age = "It must be 2 digits.";
@@ -408,11 +405,9 @@ function EditCareerPopup({ onSave, onClose, career }) {
       // Clear any previous age error if age is valid
       delete validationsErrors.age;
     }
-    
-    
-  
+
     //workmode validataion
-    if(!formData.workMode){
+    if (!formData.workMode) {
       validationsErrors.workMode = "Work Mode is required";
     }
     // Validate salaryFrom
@@ -453,7 +448,18 @@ function EditCareerPopup({ onSave, onClose, career }) {
 
     //for preventing space ..
     const regex = /^[a-zA-Z].*[\s]*$/;
-    if (["jobType", "jobTitle", "jobLocation","skillSet ","noOfRequirements","jobDescription","experienceMonth","experienceYear"].includes(name)) {
+    if (
+      [
+        "jobType",
+        "jobTitle",
+        "jobLocation",
+        "skillSet ",
+        "noOfRequirements",
+        "jobDescription",
+         
+        
+      ].includes(name)
+    ) {
       if (value === "" || regex.test(value)) {
         setFormData({ ...formData, [name]: value });
         setErrors({ ...errors, [name]: "" });
@@ -474,7 +480,16 @@ function EditCareerPopup({ onSave, onClose, career }) {
       onSave(formData); // Pass the form data back to the parent
     }
   };
+  const getTodayDate = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow.toISOString().split('T')[0];
+  };
 
+const getTomorrowDate = () => {
+  const today = new Date();
+  return today.toISOString().split('T')[0];
+};
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
       <div className="bg-white p-6 rounded-md shadow-lg w-[700px]">
@@ -518,6 +533,8 @@ function EditCareerPopup({ onSave, onClose, career }) {
                 name="noOfRequirement"
                 placeholder="No of Requirements"
                 value={formData.noOfRequirement}
+                minLength={1}
+                maxLength={6}
                 onChange={handleChange}
                 className="border p-2 border-gray-500 rounded-md"
               />
@@ -528,78 +545,89 @@ function EditCareerPopup({ onSave, onClose, career }) {
               )}
             </div>
             <div>
-              <label className="block text-gray-700">Experience Year </label>
-              <input
-                type="text"
+              <label className="block text-gray-700">Experience Year</label>
+              <select
                 name="experienceYear"
-                placeholder="Experience (Years)"
-                minLength={2}
-                maxLength={2}
                 value={formData.experienceYear}
                 onChange={handleChange}
-                className="border p-2 border-gray-500 rounded-md"
-              />
+               className="border p-2 border-gray-500 rounded-md w-full"
+              >
+                <option value="">Select Year</option>
+                
+                {Array.from({ length: 61 }, (_, i) => (
+                  <option key={i} value={i}>
+                    {i}
+                  </option>
+                ))}
+              </select>
               {errors.experienceYear && (
                 <span className="text-red-800 block h-3">
                   {errors.experienceYear}
                 </span>
               )}
             </div>
+
             <div>
-              <label className="block text-gray-700">Experience Months</label>{" "}
-              <input
-                type="text"
+              <label className="block text-gray-700">Experience Months</label>
+              <select
                 name="experienceMonth"
-                placeholder="Experience (Months)"
-                minLength={2}
-                maxLength={2}
                 value={formData.experienceMonth}
                 onChange={handleChange}
-                className="border p-2 border-gray-500 rounded-md"
-              />
+                 className="border p-2 border-gray-500 rounded-md w-full"
+              >
+                <option value="">Select Month</option>
+                {/* Options for months from 0 to 11 */}
+                {Array.from({ length: 12 }, (_, i) => (
+                  <option key={i} value={i}>
+                    {i}
+                  </option>
+                ))}
+              </select>
               {errors.experienceMonth && (
                 <span className="text-red-800 block h-3">
                   {errors.experienceMonth}
                 </span>
               )}
             </div>
-        
-          <div>
-            <label className="block text-gray-700">Job Type</label>
-            <select
-              name="jobType"
-              value={formData.jobType}
-              onChange={handleChange}
-              className="border p-2 border-gray-500 rounded-md w-full"
-            >
-              <option value="">Select Job Type</option>
-              <option value="contractToHire">Contract To Hire</option>
-              <option value="full time">Full Time</option>
-              <option value="part time">Part Time</option>
-              <option value="freelance">Freelance</option>
-              <option value="internship">Internship</option>
-            </select>
-            {errors.jobType && (
-              <span className="text-red-800 block h-3">{errors.jobType}</span>
-            )}
-          </div>
-          <div>
-            <label className="block text-gray-700">Work Mode</label>
-            <select
-              name="workMode"
-              value={formData.workMode}
-              onChange={handleChange}
-              className="border p-2 border-gray-500 rounded-md w-full"
-            >
-              <option value="">Select Work Mode</option>
-              <option value="remote">Remote</option>
-              <option value="hybrid">Hybrid</option>
-              <option value="office">Office</option>           
-            </select>
-            {errors.workMode && (
-              <span className="text-red-800 block h-3">{errors.workMode}</span>
-            )}
-          </div>
+
+            <div>
+              <label className="block text-gray-700">Job Type</label>
+              <select
+                name="jobType"
+                value={formData.jobType}
+                onChange={handleChange}
+                className="border p-2 border-gray-500 rounded-md w-full"
+              >
+                <option value="">Select Job Type</option>
+                <option value="contractToHire">Contract To Hire</option>
+                <option value="full time">Full Time</option>
+                <option value="part time">Part Time</option>
+                <option value="freelance">Freelance</option>
+                <option value="internship">Internship</option>
+              </select>
+              {errors.jobType && (
+                <span className="text-red-800 block h-3">{errors.jobType}</span>
+              )}
+            </div>
+            <div>
+              <label className="block text-gray-700">Work Mode</label>
+              <select
+                name="workMode"
+                value={formData.workMode}
+                onChange={handleChange}
+                className="border p-2 border-gray-500 rounded-md w-full"
+              >
+                <option value="">Select Work Mode</option>
+                <option value="remote">Remote</option>
+                <option value="hybrid">Hybrid</option>
+                <option value="office">Office</option>
+              </select>
+              {errors.workMode && (
+                <span className="text-red-800 block h-3">
+                  {errors.workMode}
+                </span>
+              )}
+            </div>
             <div>
               <label className="block text-gray-700">Age</label>
               <input
@@ -656,9 +684,9 @@ function EditCareerPopup({ onSave, onClose, career }) {
               <label className="block text-gray-700">Skill Set:</label>
               <input
                 type="text"
-                name="skillset"
+                name="skillSet"
                 placeholder="Skills"
-                value={formData.skillset}
+                value={formData.skillSet}
                 onChange={handleChange}
                 className="border p-2 border-gray-500 rounded-md"
               />
@@ -677,6 +705,7 @@ function EditCareerPopup({ onSave, onClose, career }) {
                 value={formData.publishDate}
                 onChange={handleChange}
                 onKeyDown={(e) => e.preventDefault()}
+                min={getTomorrowDate()} 
                 className="border p-2 border-gray-500 rounded-md"
               />
               {errors.publishDate && (
@@ -692,6 +721,7 @@ function EditCareerPopup({ onSave, onClose, career }) {
                 name="expiredDate"
                 value={formData.expiredDate}
                 onChange={handleChange}
+                min={getTodayDate()}
                 onKeyDown={(e) => e.preventDefault()}
                 className="border p-2 border-gray-500 rounded-md"
               />
@@ -701,19 +731,22 @@ function EditCareerPopup({ onSave, onClose, career }) {
                 </span>
               )}
             </div>
+            <div className="w-full">
             <textarea
               name="jobDescription"
               placeholder="Job Description........"
               value={formData.jobDescription}
               onChange={handleChange}
-              className="border p-2 col-span-2 border-gray-500 rounded-md"
+              className="border p-2 col-4 border-gray-500 rounded-md"
               rows="3"
             ></textarea>
             {errors.jobDescription && (
-              <span className="text-red-800 block h-3">
+              <span className="text-red-800 block ">
                 {errors.jobDescription}
               </span>
             )}
+            </div>
+           
             {/* Add other form fields similarly */}
           </div>
           <div className="flex justify-end mt-4">

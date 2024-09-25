@@ -347,9 +347,7 @@ function App() {
     }  
     setIsModalOpen(false); // Close the modal after saving
   };
-  
-
-  const handleCloseModal = () => {
+    const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
@@ -385,7 +383,7 @@ function App() {
               onClick={handleAddClick}
               className="w-[73px] h-[36px] rounded-[6px] bg-[#003179] text-white"
             >
-              +Add
+              Add
             </button>
           </div>
         </div>
@@ -414,9 +412,9 @@ function App() {
                 <p className="text-sm font-bold">Requirements:<span className="text-xs text-gray-700 pl-3">{career.noOfRequirement}</span> </p>
                 <p className="text-sm font-bold">Salary:<span className="text-xs text-gray-700 pl-4">{career.salaryFrom} - {career.salaryTo}</span> </p>
                 <p className="text-sm font-bold">Published Date:<span className="text-xs text-gray-700 mb-2 pl-2">{career.publishDate}</span> </p>
-                <p className="text-sm font-bold">Expire Date:<span className="text-xs text-gray-700 pl-3">{career.expiredDate}</span> </p>
+                <p className="text-sm font-bold">Expired Date:<span className="text-xs text-gray-700 pl-3">{career.expiredDate}</span> </p>
                 <p className="text-sm font-bold">Skill Set:<span className="text-xs text-gray-700 pl-3">{career.skillSet}</span> </p>
-                <p className="text-sm font-bold">Description: <span className="text-xs text-gray-700">{career.jobDescription}</span></p>
+                <p className="text-sm font-bold">Job Description: <span className="text-xs text-gray-700">{career.jobDescription}</span></p>
                 <p className="text-bse font-bold mt-5">Status: Published</p>
                 
               </>
