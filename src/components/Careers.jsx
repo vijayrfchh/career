@@ -311,11 +311,13 @@
 //   );
 // }
 
-// export default App;
-import { AiTwotoneHome } from "react-icons/ai"; 
-import EditCareerPopup from "./edie"; // Make sure you have this component
+// export default App; 
+
+
 import { useState } from "react";
+import { AiTwotoneHome } from "react-icons/ai"; 
 import { MdOutlineExpandLess , MdOutlineExpandMore} from "react-icons/md";
+import EditCareerPopup from "./edie"; // Make sure you have this component
 
 
 function App() {
@@ -324,16 +326,13 @@ function App() {
   const [careers, setCareers] = useState([]); // State to hold career cards
   const [expandedCardIndex, setExpandedCardIndex] = useState(null); // State to track expanded card
 
-  const handleAddClick = () => {
+
+   const handleAddClick = () => {
     setIsModalOpen(true);
     setSelectedCareer(null); // Reset for adding new career
   };
 
-  // const handleSaveCareer = (careerData) => {
-  //   setCareers([...careers, careerData]); // Add the new career data to the careers list
-  //   setIsModalOpen(false); // Close the modal after saving
-  // };
-
+ 
   const handleSaveCareer = (careerData) => {
     if (selectedCareer !== null) {
       // Editing an existing career
@@ -472,167 +471,3 @@ function App() {
 }
 
 export default App;
-// import React, { useState } from "react";
-// import { AiTwotoneHome } from "react-icons/ai";
-// import EditCareerPopup from "./edie"; // Ensure you have this component
-// import DeleteConfirmationModal from "./DeletePopup"; // Import the DeleteConfirmationModal component
-// import { MdOutlineExpandLess, MdOutlineExpandMore } from "react-icons/md";
-
-// function App() {
-//   const [isModalOpen, setIsModalOpen] = useState(false);
-//   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for delete confirmation modal
-//   const [selectedCareer, setSelectedCareer] = useState(null);
-//   const [careers, setCareers] = useState([]); // State to hold career cards
-//   const [expandedCardIndex, setExpandedCardIndex] = useState(null); // State to track expanded card
-
-//   const handleAddClick = () => {
-//     setIsModalOpen(true);
-//     setSelectedCareer(null); // Reset for adding new career
-//   };
-
-//   const handleSaveCareer = (careerData) => {
-//     if (selectedCareer !== null) {
-//       // Editing an existing career
-//       const updatedCareers = careers.map((career) =>
-//         career === selectedCareer ? careerData : career
-//       );
-//       setCareers(updatedCareers); // Update the careers state with the edited career
-//     } else {
-//       // Adding a new career
-//       setCareers([...careers, careerData]); // Add the new career data to the careers list
-//     }
-
-//     setIsModalOpen(false); // Close the modal after saving
-//   };
-
-//   const handleCloseModal = () => {
-//     setIsModalOpen(false);
-//   };
-
-//   const toggleExpandCard = (index) => {
-//     // Toggle the expanded card state - if already expanded, collapse it; otherwise, expand it
-//     setExpandedCardIndex(expandedCardIndex === index ? null : index);
-//   };
-
-//   const handleEditClick = (career) => {
-//     setSelectedCareer(career); // Set the career to be edited
-//     setIsModalOpen(true); // Open the modal
-//   };
-
-//   const handleDeleteClick = (career) => {
-//     setSelectedCareer(career); // Store career to delete
-//     setIsDeleteModalOpen(true); // Open delete confirmation modal
-//   };
-
-//   const confirmDelete = () => {
-//     // Delete the selected career
-//     const updatedCareers = careers.filter((c) => c !== selectedCareer);
-//     setCareers(updatedCareers);
-//     setIsDeleteModalOpen(false); // Close the delete confirmation modal
-//   };
-
-//   return (
-//     <>
-//       {/* Header Section */}
-//       <div className="w-full lg:w-10/12 xl:w-9/12 mx-auto mt-7 bg-white rounded-md border border-black/90 shadow-md p-3">
-//         <div className="flex justify-between items-center">
-//           <div className="flex items-center">
-//             <AiTwotoneHome size={20} className="mr-2" />
-//             <h1 className="text-lg font-bold">Careers Masters</h1>
-//           </div>
-//           <div className="flex gap-3 items-center">
-//             <button className="px-4 py-2 bg-blue-600 text-white rounded-lg">
-//               Export to Excel
-//             </button>
-//             <button
-//               onClick={handleAddClick}
-//               className="w-[73px] h-[36px] rounded-[6px] bg-[#003179] text-white"
-//             >
-//               +Add
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Cards Section */}
-//       <div className="w-full lg:w-10/12 xl:w-9/12 mx-auto mt-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
-//         {/* Render career cards from state */}
-//         {careers.map((career, index) => (
-//           <div
-//             key={index}
-//             className={`p-6 bg-white rounded-lg shadow-md border cursor-pointer transition-all duration-300 ease-in-out 
-//               ${expandedCardIndex === index ? "h-auto" : "h-40 overflow-hidden"}`}
-//             onClick={() => toggleExpandCard(index)} // Handle card click
-//           >
-//             <h2 className="text-lg font-bold">{career.jobTitle}</h2>
-//             <p className="text-base font-bold mb-2">Location:<span className="text-xs text-gray-700 pl-3"> {career.jobLocation}</span></p>
-//             <p className="text-sm">Role:  <span className="text-xs text-gray-700 pl-3">{career.jobType}</span></p>
-//             <p className="text-sm">Experience: <span className="text-xs text-gray-700 pl-3">{career.experienceYear} years and {career.experienceMonth} months</span></p>
-//             <p className="text-sm">Age: <span className="text-xs text-gray-700 pl-3">{career.age}</span></p>
-
-//             {/* Conditionally render more details if the card is expanded */}
-//             {expandedCardIndex === index && (
-//               <>
-//                 <p className="text-sm">Requirements:<span className="text-xs text-gray-700 pl-3">{career.noOfRequirement}</span> </p>
-//                 <p className="text-sm ">Salary:<span className="text-xs text-gray-700 pl-4">{career.salaryFrom} - {career.salaryTo}</span> </p>
-//                 <p className="text-sm">Published Date:<span className="text-xs text-gray-700 mb-2 pl-2">{career.publishDate}</span> </p>
-//                 <p className="text-sm">Expire Date:<span className="text-xs text-gray-700 pl-3">{career.expiredDate}</span> </p>
-//                 <p className="text-sm font-bold">Description: <span className="text-xs text-gray-700">{career.jobDescription}</span></p>
-//                 <p className="text-bse font-bold mt-5">Status: Published</p>
-//               </>
-//             )}
-
-//             {/* Toggle expand/collapse button */}
-//             <div className="flex justify-end mt-2">
-//               <button className="text-blue-600" onClick={() => toggleExpandCard(index)}>
-//                 {expandedCardIndex === index ? <MdOutlineExpandLess size={24} /> : <MdOutlineExpandMore size={24} />}
-//               </button>
-//             </div>
-
-//             {/* Edit and Delete buttons */}
-//             <div className="flex justify-end">
-              
-//               <button
-//                 className="px-4 py-2 mt-2 bg-[#003179] text-white rounded-lg"
-//                 onClick={(e) => {
-//                   e.stopPropagation(); // Prevent card click
-//                   handleEditClick(career); // Open edit modal
-//                 }}
-//               >
-//                 Edit
-//               </button>
-//               <button
-//                 className="px-4 py-2 mt-2 bg-white text-black border border-[#003179] rounded-lg ml-2"
-//                 onClick={(e) => {
-//                   e.stopPropagation(); // Prevent card click
-//                   handleDeleteClick(career); // Open delete confirmation modal
-//                 }}
-//               >
-//                 Delete
-//               </button>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-
-//       {/* Modal for adding/editing careers */}
-//       {isModalOpen && (
-//         <EditCareerPopup
-//           onSave={handleSaveCareer}
-//           onClose={handleCloseModal}
-//           career={selectedCareer}
-//         />
-//       )}
-
-//       {/* Modal for delete confirmation */}
-//       {isDeleteModalOpen && (
-//         <DeleteConfirmationModal
-//           onClose={() => setIsDeleteModalOpen(false)}
-//           onConfirm={confirmDelete}
-//         />
-//       )}
-//     </>
-//   );
-// }
-
-// export default App;

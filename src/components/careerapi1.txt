@@ -1,0 +1,214 @@
+import { AiTwotoneHome } from "react-icons/ai"; 
+import EditCareerPopup from "./edie"; // Ensure this component is available
+import { useState, useEffect } from "react";
+import { MdOutlineExpandLess, MdOutlineExpandMore } from "react-icons/md";
+import axios from "axios"; // Make sure to install axios if you haven't
+
+const API_URL = 'https://your-api-url.com/careers'; // Replace with your base API URL
+
+function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCareer, setSelectedCareer] = useState(null);
+  const [careers, setCareers] = useState([]); // State to hold career cards
+  const [expandedCardIndex, setExpandedCardIndex] = useState(null); // State to track expanded card
+  const [loading, setLoading] = useState(false); // Loading state
+  const [error, setError] = useState(null); // Error handling state
+
+  useEffect(() => {
+    fetchCareers(); // Fetch careers on component mount
+  }, []);
+
+  const fetchCareers = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(API_URL);
+      setCareers(response.data); // Assuming the response data is an array of careers
+    } catch (err) {
+      setError('Failed to fetch careers. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddClick = () => {
+    setIsModalOpen(true);
+    setSelectedCareer(null); // Reset for adding new career
+  };
+
+  const handleSaveCareer = async (careerData) => {
+    try {
+      setLoading(true);
+      if (selectedCareer) {
+        // Editing an existing career
+        const response = await axios.patch(`${API_URL}/${selectedCareer.id}`, careerData);
+        const updatedCareers = careers.map((career) => 
+          career.id === response.data.id ? response.data : career
+        );
+        setCareers(updatedCareers); // Update state with the edited career
+      } else {
+        // Adding a new career
+        const response = await axios.post(API_URL, careerData);
+        setCareers([...careers, response.data]); // Add new career data
+      }  
+      setIsModalOpen(false); // Close the modal after saving
+    } catch (err) {
+      setError('Failed to save career. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const toggleExpandCard = (index) => {
+    setExpandedCardIndex(expandedCardIndex === index ? null : index);
+  };
+
+  const handleEditClick = (career) => {
+    setSelectedCareer(career); // Set the career to be edited
+    setIsModalOpen(true); // Open the modal
+  };
+
+  const handleDeleteClick = async (career) => {
+    try {
+      setLoading(true);
+      await axios.delete(`${API_URL}/${career.id}`); // Delete the selected career
+      const updatedCareers = careers.filter((c) => c.id !== career.id);
+      setCareers(updatedCareers);
+    } catch (err) {
+      setError('Failed to delete career. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancelJob = async (career) => {
+    try {
+      setLoading(true);
+      // Assuming there is an API endpoint to cancel a job, replace with your URL
+      await axios.patch(`${API_URL}/${career.id}/cancel`, { status: 'Canceled' });
+      fetchCareers(); // Refetch careers to get updated status
+    } catch (err) {
+      setError('Failed to cancel job. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      {loading && <div>Loading...</div>}
+      {error && <div className="text-red-500">{error}</div>}
+
+      {/* Header Section */}
+      <div className="w-full lg:w-10/12 xl:w-9/12 mx-auto mt-7 bg-white rounded-md border border-black/90 shadow-md p-3">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center">
+            <AiTwotoneHome size={20} className="mr-2" />
+            <h1 className="text-lg font-bold">Careers Masters</h1>
+          </div>
+          <div className="flex gap-3 items-center">
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg">
+              Export to Excel
+            </button>
+            <button
+              onClick={handleAddClick}
+              className="w-[73px] h-[36px] rounded-[6px] bg-[#003179] text-white"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Cards Section */}
+      <div className="w-full lg:w-10/12 xl:w-9/12 mx-auto mt-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {/* Render career cards from state */}
+        {careers.map((career, index) => (
+          <div
+            key={career.id}
+            className={`p-6 bg-white rounded-lg shadow-md border cursor-pointer transition-all duration-300 ease-in-out 
+              ${expandedCardIndex === index ? "h-auto" : "h-40 overflow-hidden"}`}
+            onClick={() => toggleExpandCard(index)} // Handle card click
+          >
+            <h2 className="text-lg font-bold">{career.jobTitle}</h2>
+            <p className="text-base font-bold mb-2">Location:<span className="text-xs text-gray-700 pl-3"> {career.jobLocation}</span></p>
+            <p className="text-sm font-bold">Role:  <span className="text-xs text-gray-700 pl-3">{career.jobType}</span></p>
+            <p className="text-sm font-bold">Experience: <span className="text-xs text-gray-700 pl-3">{career.experienceYear} years and {career.experienceMonth} months</span></p>
+            <p className="text-sm font-bold">Age: <span className="text-xs text-gray-700 pl-3">{career.age}</span></p>
+
+            {/* Conditionally render more details if the card is expanded */}
+            {expandedCardIndex === index && (
+              <>
+                <p className="text-sm font-bold">WorkMode:<span className="text-xs text-gray-700 pl-3">{career.workMode}</span></p>
+                <p className="text-sm font-bold">Requirements:<span className="text-xs text-gray-700 pl-3">{career.noOfRequirement}</span> </p>
+                <p className="text-sm font-bold">Salary:<span className="text-xs text-gray-700 pl-4">{career.salaryFrom} - {career.salaryTo}</span> </p>
+                <p className="text-sm font-bold">Published Date:<span className="text-xs text-gray-700 mb-2 pl-2">{career.publishDate}</span> </p>
+                <p className="text-sm font-bold">Expired Date:<span className="text-xs text-gray-700 pl-3">{career.expiredDate}</span> </p>
+                <p className="text-sm font-bold">Skill Set:<span className="text-xs text-gray-700 pl-3">{career.skillSet}</span> </p>
+                <p className="text-sm font-bold">Job Description: <span className="text-xs text-gray-700">{career.jobDescription}</span></p>
+                <p className="text-bse font-bold mt-5">Status: {career.status || 'Published'}</p>
+              </>
+            )}
+
+            {/* Toggle expand/collapse button */}
+            <div className="flex justify-end mt-2">
+              <button className="text-blue-600" onClick={() => toggleExpandCard(index)}>
+                {expandedCardIndex === index ? (
+                  <MdOutlineExpandLess size={24} />
+                ) : (
+                  <MdOutlineExpandMore size={24} />
+                )}
+              </button>
+            </div>
+            <div>
+              <button
+                className="flex float-end justify-end px-4 py-2 mt-2 ml-2 bg-white text-black border border-[#003179] rounded-lg"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent card click
+                  handleDeleteClick(career); // Handle delete
+                }}
+              >
+                Delete
+              </button>
+              <button
+                className="flex float-end justify-end px-4 py-2 mt-2 bg-[#003179] text-white rounded-lg"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent card click
+                  handleEditClick(career); // Open edit popup
+                }}
+              >
+                Edit
+              </button>
+            </div>
+            <div className="flex justify-start pt-6">
+              <button
+                className="text-red-600"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent card click
+                  handleCancelJob(career); // Handle cancel job
+                }}
+              >
+                Cancel Job
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Modal for editing/adding career */}
+      {isModalOpen && (
+        <EditCareerPopup
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onSave={handleSaveCareer}
+          career={selectedCareer}
+        />
+      )}
+    </>
+  );
+}
+
+export default App;

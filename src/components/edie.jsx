@@ -338,6 +338,7 @@ function EditCareerPopup({ onSave, onClose, career }) {
     salaryFrom: "",
     salaryTo: "",
     jobType: "",
+    skillSet:"",
     workMode: "",
     publishDate: "",
     expiredDate: "",
@@ -355,7 +356,7 @@ function EditCareerPopup({ onSave, onClose, career }) {
   const validateForm = () => {
     let validationsErrors = {};
 
-    [ "skillset","jobTitle", "jobLocation"].forEach((field) => {
+    [ "skillSet","jobTitle", "jobLocation"].forEach((field) => {
       if (!formData[field]) {
         validationsErrors[field] = `${field} is required.`;
       } else if (!/^[A-Za-z ,.-]+$/.test(formData[field])) {
@@ -367,9 +368,9 @@ function EditCareerPopup({ onSave, onClose, career }) {
       }
     });
     //validate of skillset
-    if (!formData.skillset) {
-      validationsErrors.skillset = "skillset is required";
-    }
+    // if (!formData.skillset) {
+    //   validationsErrors.skillset = "skillset is required";
+    // }
     // Validate noOfRequirement
     if (!formData.noOfRequirement) {
       validationsErrors.noOfRequirement = " Requirements is required.";
@@ -452,10 +453,10 @@ function EditCareerPopup({ onSave, onClose, career }) {
       [
         "jobType",
         "jobTitle",
-        "jobLocation",
-        "skillSet ",
+        "jobLocation",      
         "noOfRequirements",
         "jobDescription",
+        "skillSet",
          
         
       ].includes(name)
@@ -690,9 +691,9 @@ const getTomorrowDate = () => {
                 onChange={handleChange}
                 className="border p-2 border-gray-500 rounded-md"
               />
-              {errors.skillset && (
+              {errors.skillSet && (
                 <span className="text-red-800 block h-3">
-                  {errors.skillset}
+                  {errors.skillSet}
                 </span>
               )}
             </div>
@@ -731,13 +732,15 @@ const getTomorrowDate = () => {
                 </span>
               )}
             </div>
-            <div className="w-full">
+            <div className="flex flex-col">
+            <label className="block  text-gray-700"> Job Description</label>
             <textarea
               name="jobDescription"
-              placeholder="Job Description........"
+              // placeholder="Job Description........"
               value={formData.jobDescription}
               onChange={handleChange}
-              className="border p-2 col-4 border-gray-500 rounded-md"
+              className="border p-2 w-72 border-gray-500 rounded-md h-16"
+              // className="border p-2 col-4 border-gray-500 rounded-md"
               rows="3"
             ></textarea>
             {errors.jobDescription && (
