@@ -331,9 +331,9 @@ function EditCareerPopup({ onSave, onClose, career }) {
   const [formData, setFormData] = useState({
     jobTitle: "",
     jobLocation: "",
-    noOfRequirement: "",
-    experienceYear: "",
-    experienceMonth: "",
+    noOfRequirements: "",
+    numberOfYears: "",
+    numberOfMonths: "",
     age: "",
     salaryFrom: "",
     salaryTo: "",
@@ -341,7 +341,7 @@ function EditCareerPopup({ onSave, onClose, career }) {
     skillSet:"",
     workMode: "",
     publishDate: "",
-    expiredDate: "",
+    expiryDate: "",
     jobDescription: "",
   });
   const [errors, setErrors] = useState({});
@@ -372,25 +372,25 @@ function EditCareerPopup({ onSave, onClose, career }) {
     //   validationsErrors.skillset = "skillset is required";
     // }
     // Validate noOfRequirement
-    if (!formData.noOfRequirement) {
-      validationsErrors.noOfRequirement = " Requirements is required.";
-    } else if (!/^\d+$/.test(formData.noOfRequirement)) {
-      validationsErrors.noOfRequirement = "It must be a number.";
+    if (!formData.noOfRequirements) {
+      validationsErrors.noOfRequirements = " Requirements is required.";
+    } else if (!/^\d+$/.test(formData.noOfRequirements)) {
+      validationsErrors.noOfRequirements = "It must be a number.";
     }
-    if (!formData.experienceYear) {
-      validationsErrors.experienceYear = "Experience's required.";
-    } else if (!/^\d+$/.test(formData.experienceYear)) {
-      validationsErrors.experienceYear = "Year must be a number.";
-    } else if (parseInt(formData.experienceYear, 10) > 30) {
-      validationsErrors.experienceYear = "less than 30 accepted";
+    if (!formData.numberOfYears) {
+      validationsErrors.numberOfYears = "Experience's required.";
+    } else if (!/^\d+$/.test(formData.numberOfYears)) {
+      validationsErrors.numberOfYears = "Year must be a number.";
+    } else if (parseInt(formData.numberOfYears, 10) > 30) {
+      validationsErrors.numberOfYears = "less than 30 accepted";
     }
   
-    if (!formData.experienceMonth) {
-      validationsErrors.experienceMonth = "Experience's required.";
-    } else if (!/^\d+$/.test(formData.experienceMonth)) {
-      validationsErrors.experienceMonth = "Month must be a number.";
-    } else if (parseInt(formData.experienceMonth, 10) > 11) {
-      validationsErrors.experienceMonth = "It must not be more than 11.";
+    if (!formData.numberOfMonths) {
+      validationsErrors.numberOfMonths = "Experience's required.";
+    } else if (!/^\d+$/.test(formData.numberOfMonths)) {
+      validationsErrors.numberOfMonths = "Month must be a number.";
+    } else if (parseInt(formData.numberOfMonths, 10) > 11) {
+      validationsErrors.numberOfMonths = "It must not be more than 11.";
     }
 
     if (!/^\d{2}$/.test(formData.age)) {
@@ -437,8 +437,8 @@ function EditCareerPopup({ onSave, onClose, career }) {
     if (!formData.publishDate) {
       validationsErrors.publishDate = "Publish Date is required.";
     }
-    if (!formData.expiredDate) {
-      validationsErrors.expiredDate = "Expired Date is required.";
+    if (!formData.expiryDate) {
+      validationsErrors.expiryDate = "Expired Date is required.";
     }
     setErrors(validationsErrors);
     return Object.keys(validationsErrors).length === 0;
@@ -454,7 +454,7 @@ function EditCareerPopup({ onSave, onClose, career }) {
         "jobType",
         "jobTitle",
         "jobLocation",      
-        "noOfRequirements",
+       
         "jobDescription",
         "skillSet",
          
@@ -531,25 +531,25 @@ const getTomorrowDate = () => {
               <label className="block text-gray-700">No Of Requirements</label>{" "}
               <input
                 type="text"
-                name="noOfRequirement"
+                name="noOfRequirements"
                 placeholder="No of Requirements"
-                value={formData.noOfRequirement}
+                value={formData.noOfRequirements}
                 minLength={1}
                 maxLength={6}
                 onChange={handleChange}
                 className="border p-2 border-gray-500 rounded-md"
               />
-              {errors.noOfRequirement && (
+              {errors.noOfRequirements && (
                 <span className="text-red-800 block h-3">
-                  {errors.noOfRequirement}
+                  {errors.noOfRequirements}
                 </span>
               )}
             </div>
             <div>
               <label className="block text-gray-700">Experience Year</label>
               <select
-                name="experienceYear"
-                value={formData.experienceYear}
+                name="numberOfYears"
+                value={formData.numberOfYears}
                 onChange={handleChange}
                className="border p-2 border-gray-500 rounded-md w-full"
               >
@@ -561,9 +561,9 @@ const getTomorrowDate = () => {
                   </option>
                 ))}
               </select>
-              {errors.experienceYear && (
+              {errors.numberOfYears && (
                 <span className="text-red-800 block h-3">
-                  {errors.experienceYear}
+                  {errors.numberOfYears}
                 </span>
               )}
             </div>
@@ -571,8 +571,8 @@ const getTomorrowDate = () => {
             <div>
               <label className="block text-gray-700">Experience Months</label>
               <select
-                name="experienceMonth"
-                value={formData.experienceMonth}
+                name="numberOfMonths"
+                value={formData.numberOfMonths}
                 onChange={handleChange}
                  className="border p-2 border-gray-500 rounded-md w-full"
               >
@@ -584,9 +584,9 @@ const getTomorrowDate = () => {
                   </option>
                 ))}
               </select>
-              {errors.experienceMonth && (
+              {errors.numberOfMonths && (
                 <span className="text-red-800 block h-3">
-                  {errors.experienceMonth}
+                  {errors.numberOfMonths}
                 </span>
               )}
             </div>
@@ -601,8 +601,8 @@ const getTomorrowDate = () => {
               >
                 <option value="">Select Job Type</option>
                 <option value="contractToHire">Contract To Hire</option>
-                <option value="full time">Full Time</option>
-                <option value="part time">Part Time</option>
+                <option value="fulltime">Full Time</option>
+                <option value="parttime">Part Time</option>
                 <option value="freelance">Freelance</option>
                 <option value="internship">Internship</option>
               </select>
@@ -716,19 +716,19 @@ const getTomorrowDate = () => {
               )}
             </div>
             <div className="flex flex-col">
-              <label className="block text-gray-700">Expired Date:</label>
+              <label className="block text-gray-700">Expiry Date:</label>
               <input
                 type="date"
-                name="expiredDate"
-                value={formData.expiredDate}
+                name="expiryDate"
+                value={formData.expiryDate}
                 onChange={handleChange}
                 min={getTodayDate()}
                 onKeyDown={(e) => e.preventDefault()}
                 className="border p-2 border-gray-500 rounded-md"
               />
-              {errors.expiredDate && (
+              {errors.expiryDate && (
                 <span className="text-red-800 block h-3">
-                  {errors.expiredDate}
+                  {errors.expiryDate}
                 </span>
               )}
             </div>
